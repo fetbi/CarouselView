@@ -60,6 +60,14 @@ namespace CarouselView.FormsPlugin.Abstractions
 			set { SetValue(IndicatorsShapeProperty, value); }
 		}
 
+		public static readonly BindableProperty IndicatorLocationProperty = BindableProperty.Create("IndicatorLocation", typeof(IndicatorLocation), typeof(CarouselViewControl), IndicatorLocation.Bottom);
+
+		public IndicatorLocation IndicatorLocation
+		{
+			get { return (IndicatorLocation)GetValue(IndicatorLocationProperty); }
+			set { SetValue(IndicatorLocationProperty, value); }
+		}
+
 		public static readonly BindableProperty ShowIndicatorsProperty = BindableProperty.Create("ShowIndicators", typeof(bool), typeof(CarouselViewControl), false);
 
 		public bool ShowIndicators

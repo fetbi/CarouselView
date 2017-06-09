@@ -15,6 +15,7 @@
                                       ItemTemplate="{Binding TemplateSelector}"
                                       ItemsSource="{Binding ItemsSource}"
                                       Orientation="Horizontal"
+									  IndicatorLocation="Bottom"
                                       Position="{Binding Position}"
                                       ShowIndicators="true" />
 

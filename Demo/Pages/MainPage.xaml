@@ -27,6 +27,7 @@
                                       ItemsSource="{Binding ItemsSource}"
                                       Orientation="Horizontal"
                                       Position="{Binding Position}"
+									  IndicatorLocation="Top"
                                       ShowIndicators="true" />
 		
 
