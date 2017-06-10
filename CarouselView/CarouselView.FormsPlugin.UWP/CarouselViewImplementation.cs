@@ -367,6 +367,11 @@ namespace CarouselView.FormsPlugin.UWP
 
                 Dots = new ObservableCollection<Shape>(dots);
                 dotsPanel.ItemsSource = Dots;
+
+				if(Element.Orientation == CarouselViewOrientation.Horizontal)
+				{
+					dotsPanel.VerticalAlignment = Element.IndicatorLocation == IndicatorLocation.Bottom ? VerticalAlignment.Bottom : VerticalAlignment.Top;
+				}
             }
             else
             {
