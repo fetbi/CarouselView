@@ -39,7 +39,7 @@ namespace CarouselView.FormsPlugin.Android
 		CirclePageIndicator indicators;
 		bool _disposed;
 
-		double ElementWidth;
+		//double ElementWidth;
         //double ElementHeight;
 
 		protected override void OnElementChanged(ElementChangedEventArgs<CarouselViewControl> e)
@@ -145,13 +145,9 @@ namespace CarouselView.FormsPlugin.Android
 		{
 			if (Element != null)
 			{
-                // To avoid page recreation caused by entry focus #136 (fix)
-				var rect = this.Element.Bounds;
-				if (ElementWidth.Equals(rect.Width))
-					return;
-				ElementWidth = rect.Width;
+				//var rect = this.Element.Bounds;
+				//ElementWidth = rect.Width;
 				//ElementHeight = rect.Height;
-
 				SetNativeView();
 				Element.PositionSelected?.Invoke(Element, Element.Position);
 			}
@@ -193,6 +189,8 @@ namespace CarouselView.FormsPlugin.Android
 					indicators?.SetStyle(Element.IndicatorsShape);
 					break;
 				case "ShowIndicators":
+					//if (indicators != null)
+					//indicators.Visibility = Element.ShowIndicators ? AViews.ViewStates.Visible : AViews.ViewStates.Gone;
 					SetIndicators();
 					break;
 				case "ItemsSource":
@@ -326,6 +324,10 @@ namespace CarouselView.FormsPlugin.Android
 
 				// IndicatorsShape BP
 				indicators.SetStyle(Element.IndicatorsShape); // Rounded or Squared
+
+				var layoutParams = new global::Android.Widget.RelativeLayout.LayoutParams(global::Android.Widget.RelativeLayout.LayoutParams.MatchParent, global::Android.Widget.RelativeLayout.LayoutParams.WrapContent);
+				layoutParams.AddRule(Element.IndicatorLocation == IndicatorLocation.Top ? global::Android.Widget.LayoutRules.AlignParentTop : global::Android.Widget.LayoutRules.AlignParentBottom);
+				indicators.LayoutParameters = layoutParams;
 			}
 			else
 			{
