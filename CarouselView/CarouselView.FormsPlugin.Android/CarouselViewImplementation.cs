@@ -308,6 +308,10 @@ namespace CarouselView.FormsPlugin.Android
 
 				// IndicatorsShape BP
 				indicators.SetStyle(Element.IndicatorsShape); // Rounded or Squared
+
+				var layoutParams = new global::Android.Widget.RelativeLayout.LayoutParams(global::Android.Widget.RelativeLayout.LayoutParams.MatchParent, global::Android.Widget.RelativeLayout.LayoutParams.WrapContent);
+				layoutParams.AddRule(Element.IndicatorLocation == IndicatorLocation.Top ? global::Android.Widget.LayoutRules.AlignParentTop : global::Android.Widget.LayoutRules.AlignParentBottom);
+				indicators.LayoutParameters = layoutParams;
 			}
 			else
 			{
