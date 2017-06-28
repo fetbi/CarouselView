@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarouselView.FormsPlugin.Abstractions", "CarouselView\CarouselView.FormsPlugin.Abstractions\CarouselView.FormsPlugin.Abstractions.csproj", "{14C534B6-1984-41A9-A384-D3A5508588E3}"
 EndProject
@@ -317,6 +317,7 @@ Global
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Debug|x86.Build.0 = Debug|x86
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Debug|x86.Deploy.0 = Debug|x86
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Release|Any CPU.ActiveCfg = Release|x86
+		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Release|Any CPU.Deploy.0 = Release|x86
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Release|ARM.ActiveCfg = Release|ARM
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Release|ARM.Build.0 = Release|ARM
 		{D1912CD5-0A3E-404C-8CAD-B786742BC926}.Release|ARM.Deploy.0 = Release|ARM
