@@ -91,6 +91,9 @@ namespace CarouselView.FormsPlugin.iOS
 
 			if (e.NewElement != null)
 			{
+				if (Control == null)
+					SetNativeView();
+
 				Element.SizeChanged += Element_SizeChanged;
 
 				// Configure the control and subscribe to event handlers
