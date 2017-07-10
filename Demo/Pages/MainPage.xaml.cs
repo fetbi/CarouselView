@@ -22,7 +22,7 @@ namespace Demo
 
 			//myCarousel.ItemsSource = _vm.ItemsSource;
 
-			myCarousel.PositionSelected += PositionSelected;
+			myCarousel.PositionSelected +=  PositionSelected;
 			//myCarousel.ItemTemplate = new DataTemplate(typeof(MyFirstView));
 
 			MessagingCenter.Subscribe<MyFirstView> (this, "RemoveMe", (sender) => {
@@ -36,12 +36,12 @@ namespace Demo
 				Text = "Reset",
 				Order = ToolbarItemOrder.Primary,
 				Command = new Command(() => {
-					//_vm.ItemsSource.Clear();
-					//_vm.ItemsSource.Move(0, 4);
-					//_vm.ItemsSource[0] = 5;
+					_vm.ItemsSource.Clear();
+					//_vm.ItemsSource.Move(0, 4); // Position selected not called
+                    //_vm.ItemsSource[0] = new MySecondView();
 					//myCarousel.IndicatorsShape = IndicatorsShape.Circle;
 					//myCarousel.ShowIndicators = !myCarousel.ShowIndicators;
-					_vm.Position = _vm.Position == 0 ? 3 : 0;
+					//_vm.Position = _vm.Position == 0 ? 3 : 0;
 				})
 			});
 
@@ -52,8 +52,8 @@ namespace Demo
 				Command = new Command(() =>
 				{
 					//Navigation.PushAsync(new NoSwipePage());
-					//Navigation.PushAsync(new SecondPage());
-					Navigation.PushAsync(new MyTabbedPage());
+					Navigation.PushAsync(new SecondPage());
+					//Navigation.PushAsync(new MyTabbedPage());
 				})
 			});
 		}
@@ -68,7 +68,6 @@ namespace Demo
 		public void PositionSelected (object sender, int position)
 		{
 			ConfigureButtons();
-			Debug.WriteLine("Position parameter " + position + " selected");
 			Debug.WriteLine("Position " + myCarousel.Position + " selected");
 
 		}
@@ -92,7 +91,7 @@ namespace Demo
 				// Do this to trigger PositionSelected
 				if (_vm.ItemsSource.Count > 0)
 				{
-					_vm.ItemsSource.Add(_vm.ItemsSource.Max() + 1);
+                    _vm.ItemsSource.Add(_vm.ItemsSource.Max() + 1);
 					_vm.Position = _vm.ItemsSource.Count - 1;
 				}
 				else

@@ -12,6 +12,20 @@ using AViews = Android.Views;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 
+/*
+ * Save state in Android:
+ * 
+ * It is not possible in Xamarin.Forms.
+ * Everytime you create a view in Forms, its Id and each widget Id is generated when the native view is rendered,
+ * so its not possible to restore state from a SparseArray.
+ * 
+ * Workaround:
+ * 
+ * Use two way bindings to your ViewModel, so for example when a value is entered in a Text field,
+ * it will be saved to ViewModel and when the view is destroyed and recreated by ViewPager, its state will be restored.
+ * 
+ */
+
 [assembly: ExportRenderer(typeof(CarouselViewControl), typeof(CarouselViewRenderer))]
 namespace CarouselView.FormsPlugin.Android
 {
@@ -25,7 +39,7 @@ namespace CarouselView.FormsPlugin.Android
 		CirclePageIndicator indicators;
 		bool _disposed;
 
-		//double ElementWidth;
+		double ElementWidth;
         //double ElementHeight;
 
 		protected override void OnElementChanged(ElementChangedEventArgs<CarouselViewControl> e)
@@ -94,6 +108,8 @@ namespace CarouselView.FormsPlugin.Android
 					Source.RemoveAt(e.OldStartingIndex);
 					Source.Insert(e.NewStartingIndex, e.OldItems[e.OldStartingIndex]);
 					viewPager.Adapter?.NotifyDataSetChanged();
+
+                    Element.PositionSelected?.Invoke(Element, Element.Position);
 				}
             }
 
@@ -129,9 +145,13 @@ namespace CarouselView.FormsPlugin.Android
 		{
 			if (Element != null)
 			{
-				//var rect = this.Element.Bounds;
-				//ElementWidth = rect.Width;
+                // To avoid page recreation caused by entry focus #136 (fix)
+				var rect = this.Element.Bounds;
+				if (ElementWidth.Equals(rect.Width))
+					return;
+				ElementWidth = rect.Width;
 				//ElementHeight = rect.Height;
+
 				SetNativeView();
 				Element.PositionSelected?.Invoke(Element, Element.Position);
 			}
@@ -173,8 +193,6 @@ namespace CarouselView.FormsPlugin.Android
 					indicators?.SetStyle(Element.IndicatorsShape);
 					break;
 				case "ShowIndicators":
-					//if (indicators != null)
-					//indicators.Visibility = Element.ShowIndicators ? AViews.ViewStates.Visible : AViews.ViewStates.Gone;
 					SetIndicators();
 					break;
 				case "ItemsSource":
@@ -437,13 +455,22 @@ namespace CarouselView.FormsPlugin.Android
 				}
 				else {
 
-					var selector = Element.ItemTemplate as DataTemplateSelector;
-					if (selector != null)
-						formsView = (View)selector.SelectTemplate(bindingContext, Element).CreateContent();
-					else
-						formsView = (View)Element.ItemTemplate.CreateContent();
+                    var view = bindingContext as View;
 
-					formsView.BindingContext = bindingContext;
+                    if (view != null)
+                    {
+                        formsView = view;
+                    }
+                    else
+                    {
+                        var selector = Element.ItemTemplate as DataTemplateSelector;
+                        if (selector != null)
+                            formsView = (View)selector.SelectTemplate(bindingContext, Element).CreateContent();
+                        else
+                            formsView = (View)Element.ItemTemplate.CreateContent();
+
+                        formsView.BindingContext = bindingContext;
+                    }
 				}
 
                 // HeightRequest fix
@@ -452,10 +479,10 @@ namespace CarouselView.FormsPlugin.Android
 				var nativeConverted = formsView.ToAndroid(new Rectangle (0, 0, Element.Width, Element.Height));
 				nativeConverted.Tag = new Tag() { BindingContext = bindingContext }; //position;
 
+                //nativeConverted.SaveEnabled = true;
+                //nativeConverted.RestoreHierarchyState(mViewStates);
+
 				var pager = (ViewPager)container;
-
-				//nativeConverted.RestoreHierarchyState(mViewStates);
-
 				pager.AddView (nativeConverted);
 
 				return nativeConverted;
@@ -465,16 +492,13 @@ namespace CarouselView.FormsPlugin.Android
 			{
 				var pager = (ViewPager)container;
 				var view = (AViews.ViewGroup)objectValue;
+                //view.SaveEnabled = true;
 				//view.SaveHierarchyState(mViewStates);
 				pager.RemoveView (view);
 			}
 
 			public override int GetItemPosition (Java.Lang.Object objectValue)
 			{
-				/*var tag = int.Parse(((AViews.View)objectValue).Tag.ToString());
-				if (tag == Element.Position)
-					return tag;
-				return PositionNone;*/
 				var tag = (Tag)((AViews.View)objectValue).Tag;
                 var position = Source.IndexOf(tag.BindingContext);
 				return position != -1 ? position : PositionNone;
