@@ -73,6 +73,9 @@ namespace CarouselView.FormsPlugin.iOS
 
 			if (e.OldElement != null)
 			{
+				if (Control == null)
+					SetNativeView();
+
 				// Unsubscribe from event handlers and cleanup any resources
 				if (pageController != null)
 				{
