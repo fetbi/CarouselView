@@ -72,9 +72,6 @@ namespace CarouselView.FormsPlugin.Android
 
 			if (e.NewElement != null)
 			{
-				if (Control == null)
-					SetNativeView();
-
 				Element.SizeChanged += Element_SizeChanged;
 
 				// Configure the control and subscribe to event handlers
@@ -82,7 +79,13 @@ namespace CarouselView.FormsPlugin.Android
 					((INotifyCollectionChanged)Element.ItemsSource).CollectionChanged += ItemsSource_CollectionChanged;
 			}
 		}
+		protected override void OnAttachedToWindow()
+		{
+			if (Control == null)
+				Element_SizeChanged(Element, null);
 
+			base.OnAttachedToWindow();
+		}
 		async void ItemsSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
             // NewItems contains the item that was added.

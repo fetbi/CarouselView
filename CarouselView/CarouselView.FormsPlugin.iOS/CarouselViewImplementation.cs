@@ -73,9 +73,6 @@ namespace CarouselView.FormsPlugin.iOS
 
 			if (e.OldElement != null)
 			{
-				if (Control == null)
-					SetNativeView();
-
 				// Unsubscribe from event handlers and cleanup any resources
 				if (pageController != null)
 				{
@@ -94,9 +91,6 @@ namespace CarouselView.FormsPlugin.iOS
 
 			if (e.NewElement != null)
 			{
-				if (Control == null)
-					SetNativeView();
-
 				Element.SizeChanged += Element_SizeChanged;
 
 				// Configure the control and subscribe to event handlers
@@ -104,7 +98,21 @@ namespace CarouselView.FormsPlugin.iOS
 					((INotifyCollectionChanged)Element.ItemsSource).CollectionChanged += ItemsSource_CollectionChanged;
 			}
 		}
+		public override void MovedToSuperview()
+		{
+			if (Control == null)
+				Element_SizeChanged(Element, null);
 
+			base.MovedToSuperview();
+		}
+
+		public override void MovedToWindow()
+		{
+			if (Control == null)
+				Element_SizeChanged(Element, null);
+
+			base.MovedToWindow();
+		}
 		async void ItemsSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			// NewItems contains the item that was added.
